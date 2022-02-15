@@ -9,6 +9,7 @@ export default {
   type: 'postgresql', // one of `mongo` | `mysql` | `mariadb` | `postgresql` | `sqlite`
   user: 'admin',
   password: 'root',
+  allowGlobalContext: true,
   debug: !__prod__,
   migrations: {
     path: path.join(__dirname, './migrations'), // path to the folder with migrations

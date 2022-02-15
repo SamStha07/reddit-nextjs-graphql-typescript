@@ -1,9 +1,11 @@
+import 'reflect-metadata';
 import { MikroORM } from '@mikro-orm/core';
 import express from 'express';
 import mikroConfig from './mikro-orm.config';
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { HelloResolver } from './resolvers/hello';
+import { PostResolver } from './resolvers/post';
 
 const main = async () => {
   const orm = await MikroORM.init(mikroConfig);
@@ -14,8 +16,21 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver],
+      resolvers: [HelloResolver, PostResolver],
       validate: false,
+    }),
+    formatError: (err) => {
+      // Don't give the specific errors to the client.
+      if (err.message.startsWith('Database Error: ')) {
+        return new Error('Internal server error');
+      }
+      // Otherwise return the original error. The error can also
+      // be manipulated in other ways, as long as it's returned.
+      return err;
+    },
+    //context will be accessible by all the resolvers
+    context: () => ({
+      em: orm.em,
     }),
   });
 
