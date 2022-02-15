@@ -1,13 +1,12 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { Field, ObjectType } from 'type-graphql';
 import { v4 } from 'uuid';
+import { BaseEntity, Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Field } from 'type-graphql';
 
-@ObjectType()
-@Entity()
-export class Post {
+// @Entity({ abstract: true })
+export abstract class CustomBaseEntity {
   @Field() // will expose this to graphql schema
   @PrimaryKey()
-  id: string = v4();
+  uuid: string = v4();
 
   @Field(() => String)
   @Property()
@@ -17,8 +16,4 @@ export class Post {
   @Field(() => String)
   @Property({ onUpdate: () => new Date() })
   updatedAt: Date = new Date();
-
-  @Field()
-  @Property({ type: 'text' })
-  title!: string;
 }

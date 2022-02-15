@@ -4,7 +4,7 @@ import { v4 } from 'uuid';
 
 @ObjectType()
 @Entity()
-export class Post {
+export class User {
   @Field() // will expose this to graphql schema
   @PrimaryKey()
   id: string = v4();
@@ -19,6 +19,9 @@ export class Post {
   updatedAt: Date = new Date();
 
   @Field()
+  @Property({ type: 'text', unique: true })
+  username!: string;
+
   @Property({ type: 'text' })
-  title!: string;
+  password!: string;
 }

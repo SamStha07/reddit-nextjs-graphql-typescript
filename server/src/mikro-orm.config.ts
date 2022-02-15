@@ -2,9 +2,10 @@ import { __prod__ } from './constants';
 import { Post } from './entities/Post';
 import { MikroORM } from '@mikro-orm/core';
 import path from 'path';
+import { User } from './entities/User';
 
 export default {
-  entities: [Post],
+  entities: [Post, User],
   dbName: 'reddit',
   type: 'postgresql', // one of `mongo` | `mysql` | `mariadb` | `postgresql` | `sqlite`
   user: 'admin',

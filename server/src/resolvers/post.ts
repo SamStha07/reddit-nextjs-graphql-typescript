@@ -14,7 +14,7 @@ export class PostResolver {
   @Query(() => Post, { nullable: true })
   post(
     // in arg 'id', we have to use this id while query
-    @Arg('id', () => Int) id: number,
+    @Arg('id') id: string,
     @Ctx() ctx: MyContext
   ): Promise<Post | null> {
     return ctx.em.findOne(Post, { id });
@@ -32,7 +32,7 @@ export class PostResolver {
 
   @Mutation(() => Post, { nullable: true })
   async updatePost(
-    @Arg('id') id: number,
+    @Arg('id') id: string,
     //  if we want donot want title field i.e optional field
     // @Arg('title', ()=> String, {nullable: true}) title: string,
     @Arg('title') title: string,
@@ -56,7 +56,7 @@ export class PostResolver {
 
   @Mutation(() => Boolean)
   async deletePost(
-    @Arg('id') id: number,
+    @Arg('id') id: string,
     @Ctx() { em }: MyContext
   ): Promise<Boolean> {
     const post = await em.findOne(Post, { id });
